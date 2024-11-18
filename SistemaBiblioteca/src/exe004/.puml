@@ -1,0 +1,19 @@
+@startuml Gestor_Tarefas
+class Tarefa {
+    +id: number
+    +descricao: string
+    +status: string
+    +projeto: string
+    +constructor(id: number, descricao: string, status: string, projeto: string)
+}
+
+class GestorTarefas {
+    -tarefas: Tarefa[]
+    +constructor()
+    +adicionarTarefa(tarefa: Tarefa): void
+    +atualizarStatus(id: number, status: string): void
+    +consultarTarefasPorProjeto(projeto: string): Tarefa[]
+}
+
+GestorTarefas "1" *-- "*" Tarefa
+@enduml

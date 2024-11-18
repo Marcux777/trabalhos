@@ -1,0 +1,23 @@
+@startuml GerenciamentodeFuncionários
+class Funcionario {
+    -matricula: number
+    -nome: string
+    -cargo: string
+    -salario: number
+    +Funcionario(matricula: number, nome: string, cargo: string, salario: number)
+    +getMatricula(): number
+    +getNome(): string
+    +getCargo(): string
+    +getSalario(): number
+    +setSalario(novoSalario: number): void
+}
+
+class Empresa {
+    -funcionarios: Funcionario[]
+    +adicionarFuncionario(funcionario: Funcionario): void
+    +atualizarSalario(matricula: number, novoSalario: number): void
+    +consultarFuncionario(matricula: number): Funcionario | undefined
+}
+
+Empresa "1" *-- "many" Funcionario
+@enduml

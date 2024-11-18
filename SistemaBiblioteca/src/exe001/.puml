@@ -1,0 +1,17 @@
+@startuml SistemaBiblioteca
+class Livro {
+    - codigo: number
+    - titulo: string
+    - autor: string
+    - disponivel: boolean
+}
+
+class Biblioteca {
+    - acervo: Livro[]
+    + adicionarLivro(livro: Livro): void
+    + registrarEmprestimo(codigo: number): void
+    + consultarDisponibilidade(codigo: number): boolean
+}
+
+Biblioteca "1" *-- "0..*" Livro
+@enduml

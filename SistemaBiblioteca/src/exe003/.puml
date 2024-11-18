@@ -1,0 +1,19 @@
+@startuml Sistema_de_Reservas_de_Hotel
+
+class Reserva {
+    - numeroQuarto: number
+    - nomeHospede: string
+    - dataEntrada: Date
+    - dataSaida: Date
+    + constructor(numeroQuarto: number, nomeHospede: string, dataEntrada: Date, dataSaida: Date)
+}
+
+class Hotel {
+    - reservas: Reserva[]
+    + registrarReserva(reserva: Reserva): void
+    + cancelarReserva(numeroQuarto: number): void
+    + consultarStatusQuarto(numeroQuarto: number): string
+}
+
+Reserva --> Hotel : "1..*" 
+@enduml
