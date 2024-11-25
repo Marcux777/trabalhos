@@ -1,0 +1,44 @@
+[
+  {
+    "id": "eixo_3",
+    "label": "Desenvolvimento de Projetos",
+    "description": "Desenvolver projetos de qualquer natureza em equipes multidisciplinares.",
+    "value": 4,
+    "children": [
+      {
+        "id": "comp_3_1",
+        "label": "Compreender e explicar dimensões quantitativas de problemas",
+        "value": 3,
+        "children": [
+          {
+            "id": "cont_3_1_1",
+            "label": "Probabilidade e Estatística",
+            "value": 3
+          },
+          {
+            "id": "cont_3_1_2",
+            "label": "Métodos Quantitativos em Computação",
+            "value": 3
+          }
+        ]
+      },
+      {
+        "id": "comp_3_2",
+        "label": "Preparar e apresentar problemas técnicos e suas soluções",
+        "value": 4,
+        "children": [
+          {
+            "id": "cont_3_2_1",
+            "label": "Comunicação Profissional",
+            "value": 3
+          },
+          {
+            "id": "cont_3_2_2",
+            "label": "Inglês Técnico",
+            "value": 3
+          }
+        ]
+      }
+    ]
+  }
+]

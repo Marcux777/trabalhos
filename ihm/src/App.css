@@ -1,0 +1,127 @@
+/* src/App.css */
+
+.reactflow-wrapper {
+  width: 100%;
+  height: 100vh;
+  background: radial-gradient(circle, #2c3e50, #1a1a1a); /* Fundo com gradiente */
+  position: relative;
+}
+
+/* Estilos base para nós */
+.obsidian-node {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%; /* Nó circular */
+  background-color: #2d2d2d; /* Fundo escuro */
+  border: 2px solid #7f7fff; /* Contorno em azul claro */
+  color: #e0e0e0; /* Texto claro */
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  flex-direction: column;
+  padding: 10px;
+}
+
+/* Estilos específicos para tipos de nós */
+.obsidian-node.competencia {
+  background-color: rgba(127, 127, 255, 0.2);
+  border: 2px solid rgba(127, 127, 255, 0.7);
+  box-shadow: 0 4px 8px rgba(127, 127, 255, 0.3);
+}
+
+.obsidian-node.materia {
+  background-color: rgba(255, 127, 127, 0.2);
+  border: 2px solid rgba(255, 127, 127, 0.7);
+  box-shadow: 0 4px 8px rgba(255, 127, 127, 0.3);
+}
+
+/* Efeitos de Hover para Nós */
+.obsidian-node:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* Label do nó */
+.node-label {
+  font-weight: bold;
+  color: #ffffff;
+  text-align: center;
+}
+
+/* Descrição do nó */
+.node-description {
+  font-size: 12px;
+  color: #ddd;
+}
+
+/* Estilos para as Arestas */
+.react-flow__edge-path.customSmooth {
+  stroke: #ffffff;
+  stroke-width: 2px;
+  fill: none;
+}
+
+/* Efeito de Hover nas Arestas */
+.react-flow__edge-path:hover {
+  stroke: #ff7f7f;
+   stroke-width: 3px;
+}
+
+/* Estilos para os Rótulos das Arestas */
+.react-flow__edge-text {
+  font-size: 12px;
+  fill: #ffffff;
+}
+
+/* Estilos para o Painel de Informações */
+.info-panel {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #2d2d2d;
+  border: 1px solid rgba(127, 127, 255, 0.3);
+  border-radius: 8px;
+  padding: 16px;
+  width: 300px;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+.info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  border-bottom: 1px solid rgba(127, 127, 255, 0.3);
+  padding-bottom: 8px;
+}
+
+.info-header h3 {
+  margin: 0;
+  color: #7f7fff;
+}
+
+.info-header button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.info-header button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.info-content p {
+  margin: 8px 0;
+  font-size: 14px;
+}

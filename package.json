@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@amcharts/amcharts5": "^5.10.8",
+    "@xyflow/react": "^12.3.5"
+  }
+}
