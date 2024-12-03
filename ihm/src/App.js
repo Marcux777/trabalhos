@@ -5,7 +5,7 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-      <h1>Gráfico de Competências</h1>
+      <h1>Grafo de Competências</h1>
       <ForceDirectedTreeChart />
     </div>
   );

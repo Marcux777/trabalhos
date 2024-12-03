@@ -1,5 +1,186 @@
 [
   {
+    "id": "eixo_1",
+    "label": "Resolução de Problemas",
+    "description": "A resolução de problemas por meio da computação é possível com a execução de passos finitos e bem definidos.",
+    "value": 6,
+    "competencia": "Resolver problemas que tenham solução algorítmica, considerando os limites da computação, o que inclui\n ● Identificar os problemas que apresentem soluções algorítmicas viáveis.\n ● Implementar a solução usando o paradigma de programação adequado.\n ● Selecionar ou criar algoritmos apropriados para situações particulares.",
+    "linkWith": ["eixo_2", "eixo_3", "eixo_4"],
+    "children": [
+      {
+        "id": "comp_1_1",
+        "label": "Identificar problemas que tenham solução algorítmica",
+        "classificação": "Avaliar",
+        "value": 5,
+        "children": [
+          {
+            "id": "Algoritmos",
+            "label": "Algoritmos",
+            "value": 4
+          },
+          {
+            "id": "Metodologia Científica",
+            "label": "Metodologia Científica",
+            "value": 4
+          },
+          {
+            "id": "Lógica Matemática",
+            "label": "Lógica Matemática",
+            "value": 4
+          },
+          {
+            "id": "Matemática Discreta",
+            "label": "Matemática Discreta",
+            "value": 4
+          }
+        ]
+      },
+      {
+        "id": "comp_1_2",
+        "label": "Conhecer os limites da computação",
+        "classificação": "Avaliar",
+        "value": 5,
+        "children": [
+          {
+            "id": "Complexidade de Algoritmos",
+            "label": "Complexidade de Algoritmos",
+            "value": 3,
+            "children": []
+          },
+          {
+            "id": "Teoria da Computação",
+            "label": "Teoria da Computação",
+            "value": 3,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "comp_1_3",
+        "label": "Resolver problemas usando ambientes de programação",
+        "classificação": "Criar",
+        "value": 5,
+        "linkWith": ["Algoritmos", "Lógica Matemática"],
+        "children": [
+          {
+            "id": "Técnicas de Programação",
+            "label": "Técnicas de Programação",
+            "value": 4,
+            "children": []
+          },
+          {
+            "id": "Estruturas de Dados",
+            "label": "Estruturas de Dados",
+            "value": 4,
+            "children": []
+          },
+          {
+            "id": "Padrões de Projetos",
+            "label": "Padrões de Projetos",
+            "value": 4,
+            "children": []
+          },
+          {
+            "id": "Teoria dos Grafos",
+            "label": "Teoria dos Grafos",
+            "value": 4,
+            "children": []
+          },
+          {
+            "id": "Compiladores",
+            "label": "Compiladores",
+            "value": 4,
+            "children": []
+          },
+          {
+            "id": "Inglês Instrumental",
+            "label": "Inglês Instrumental",
+            "value": 4,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "comp_1_4",
+        "label": "Compreender e explicar as dimensões quantitativas de um problema",
+        "classificação": "Aplicar",
+        "value": 5,
+        "linkWith": ["Complexidade de Algoritmos", "Matemática Discreta"],
+        "children":[
+          {
+            "id": "Métodos Quantitativos em Computação",
+            "label": "Métodos Quantitativos em Computação",
+            "value": 4,
+            "children": []
+          },
+          {
+            "id": "Probabilidade e Estatística",
+            "label": "Probabilidade e Estatística",
+            "value": 4,
+            "children": []
+          },
+          {
+            "id": "Cálculo",
+            "label": "Cálculo",
+            "value": 4,
+            "children": []
+          },
+          {
+            "id": "Geometria Analítica",
+            "label": "Geometria Analítica",
+            "value": 4,
+            "children": []
+          },
+          {
+            "id": "Álgebra Linear",
+            "label": "Álgebra Linear",
+            "value": 4,
+            "children": []
+          },
+          {
+            "id": "Cálculo Numérico",
+            "label": "Cálculo Numérico",
+            "value": 4,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "comp_1_5",
+        "label": "Reconhecer a importância do pensamento",
+        "classificação": "Aplicar",
+        "value": 5,
+        "linkWith": ["Algoritmos"],
+        "children":[
+          {
+            "id": "Estruturas de Dados",
+            "label": "Estruturas de Dados",
+            "value": 4,
+            "children": []
+          },
+          {
+            "id": "Computação e Sociedade",
+            "label": "Computação e Sociedade",
+            "value": 4,
+            "children": []
+          },
+          {
+            "id": "Empreendedorismo",
+            "label": "Empreendedorismo",
+            "value": 4,
+            "children": []
+          },
+          {
+            "id": "Fundamentos de Administração",
+            "label": "Fundamentos de Administração",
+            "value": 4,
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "eixo_3",
     "label": "Desenvolvimento de Projetos",
     "description": "Desenvolver projetos de qualquer natureza em equipes multidisciplinares.",
@@ -8,34 +189,84 @@
       {
         "id": "comp_3_1",
         "label": "Compreender e explicar dimensões quantitativas de problemas",
-        "value": 3,
+        "value": 3.5,
         "children": [
           {
             "id": "cont_3_1_1",
             "label": "Probabilidade e Estatística",
-            "value": 3
+            "value": 3,
+            "children": []
           },
           {
             "id": "cont_3_1_2",
             "label": "Métodos Quantitativos em Computação",
-            "value": 3
+            "value": 3,
+            "children": []
           }
         ]
       },
       {
         "id": "comp_3_2",
         "label": "Preparar e apresentar problemas técnicos e suas soluções",
-        "value": 4,
+        "value": 3.5,
         "children": [
           {
             "id": "cont_3_2_1",
             "label": "Comunicação Profissional",
-            "value": 3
+            "value": 3,
+            "children": []
           },
           {
             "id": "cont_3_2_2",
             "label": "Inglês Técnico",
-            "value": 3
+            "value": 3,
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "eixo_4",
+    "label": "Inovação e Empreendedorismo",
+    "description": "Desenvolver projetos de qualquer natureza em equipes multidisciplinares.",
+    "value": 4,
+    "children": [
+      {
+        "id": "comp_4_1",
+        "label": "Identificar oportunidades de negócio",
+        "value": 3.5,
+        "children": [
+          {
+            "id": "cont_4_1_1",
+            "label": "Empreendedorismo",
+            "value": 3,
+            "children": []
+          },
+          {
+            "id": "cont_4_1_2",
+            "label": "Inovação",
+            "value": 3,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "comp_4_2",
+        "label": "Desenvolver e implementar projetos de inovação",
+        "value": 3.5,
+        "children": [
+          {
+            "id": "cont_4_2_1",
+            "label": "Gestão de Projetos",
+            "value": 3,
+            "children": []
+          },
+          {
+            "id": "cont_4_2_2",
+            "label": "Design Thinking",
+            "value": 3,
+            "children": []
           }
         ]
       }
