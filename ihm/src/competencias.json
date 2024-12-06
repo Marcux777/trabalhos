@@ -3,7 +3,7 @@
     "id": "eixo_1",
     "label": "Resolução de Problemas",
     "description": "A resolução de problemas por meio da computação é possível com a execução de passos finitos e bem definidos.",
-    "value": 6,
+    "category": 6,
     "competencia": "Resolver problemas que tenham solução algorítmica, considerando os limites da computação, o que inclui\n ● Identificar os problemas que apresentem soluções algorítmicas viáveis.\n ● Implementar a solução usando o paradigma de programação adequado.\n ● Selecionar ou criar algoritmos apropriados para situações particulares.",
     "linkWith": ["eixo_2", "eixo_3", "eixo_4"],
     "children": [
@@ -11,27 +11,27 @@
         "id": "comp_1_1",
         "label": "Identificar problemas que tenham solução algorítmica",
         "classificação": "Avaliar",
-        "value": 5,
+        "category": 5,
         "children": [
           {
             "id": "Algoritmos",
             "label": "Algoritmos",
-            "value": 4
+            "category": 4
           },
           {
             "id": "Metodologia Científica",
             "label": "Metodologia Científica",
-            "value": 4
+            "category": 4
           },
           {
             "id": "Lógica Matemática",
             "label": "Lógica Matemática",
-            "value": 4
+            "category": 4
           },
           {
             "id": "Matemática Discreta",
             "label": "Matemática Discreta",
-            "value": 4
+            "category": 4
           }
         ]
       },
@@ -39,18 +39,18 @@
         "id": "comp_1_2",
         "label": "Conhecer os limites da computação",
         "classificação": "Avaliar",
-        "value": 5,
+        "category": 5,
         "children": [
           {
             "id": "Complexidade de Algoritmos",
             "label": "Complexidade de Algoritmos",
-            "value": 3,
+            "category": 3,
             "children": []
           },
           {
             "id": "Teoria da Computação",
             "label": "Teoria da Computação",
-            "value": 3,
+            "category": 3,
             "children": []
           }
         ]
@@ -59,43 +59,43 @@
         "id": "comp_1_3",
         "label": "Resolver problemas usando ambientes de programação",
         "classificação": "Criar",
-        "value": 5,
+        "category": 5,
         "linkWith": ["Algoritmos", "Lógica Matemática"],
         "children": [
           {
             "id": "Técnicas de Programação",
             "label": "Técnicas de Programação",
-            "value": 4,
+            "category": 4,
             "children": []
           },
           {
             "id": "Estruturas de Dados",
             "label": "Estruturas de Dados",
-            "value": 4,
+            "category": 4,
             "children": []
           },
           {
             "id": "Padrões de Projetos",
             "label": "Padrões de Projetos",
-            "value": 4,
+            "category": 4,
             "children": []
           },
           {
             "id": "Teoria dos Grafos",
             "label": "Teoria dos Grafos",
-            "value": 4,
+            "category": 4,
             "children": []
           },
           {
             "id": "Compiladores",
             "label": "Compiladores",
-            "value": 4,
+            "category": 4,
             "children": []
           },
           {
             "id": "Inglês Instrumental",
             "label": "Inglês Instrumental",
-            "value": 4,
+            "category": 4,
             "children": []
           }
         ]
@@ -104,43 +104,43 @@
         "id": "comp_1_4",
         "label": "Compreender e explicar as dimensões quantitativas de um problema",
         "classificação": "Aplicar",
-        "value": 5,
+        "category": 5,
         "linkWith": ["Complexidade de Algoritmos", "Matemática Discreta"],
         "children":[
           {
             "id": "Métodos Quantitativos em Computação",
             "label": "Métodos Quantitativos em Computação",
-            "value": 4,
+            "category": 4,
             "children": []
           },
           {
             "id": "Probabilidade e Estatística",
             "label": "Probabilidade e Estatística",
-            "value": 4,
+            "category": 4,
             "children": []
           },
           {
             "id": "Cálculo",
             "label": "Cálculo",
-            "value": 4,
+            "category": 4,
             "children": []
           },
           {
             "id": "Geometria Analítica",
             "label": "Geometria Analítica",
-            "value": 4,
+            "category": 4,
             "children": []
           },
           {
             "id": "Álgebra Linear",
             "label": "Álgebra Linear",
-            "value": 4,
+            "category": 4,
             "children": []
           },
           {
             "id": "Cálculo Numérico",
             "label": "Cálculo Numérico",
-            "value": 4,
+            "category": 4,
             "children": []
           }
         ]
@@ -149,124 +149,166 @@
         "id": "comp_1_5",
         "label": "Reconhecer a importância do pensamento",
         "classificação": "Aplicar",
-        "value": 5,
+        "category": 5,
         "linkWith": ["Algoritmos"],
         "children":[
           {
             "id": "Estruturas de Dados",
             "label": "Estruturas de Dados",
-            "value": 4,
+            "category": 4,
             "children": []
           },
           {
             "id": "Computação e Sociedade",
             "label": "Computação e Sociedade",
-            "value": 4,
+            "category": 4,
             "children": []
           },
           {
             "id": "Empreendedorismo",
             "label": "Empreendedorismo",
-            "value": 4,
+            "category": 4,
             "children": []
           },
           {
             "id": "Fundamentos de Administração",
             "label": "Fundamentos de Administração",
-            "value": 4,
-            "children": []
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "eixo_3",
-    "label": "Desenvolvimento de Projetos",
-    "description": "Desenvolver projetos de qualquer natureza em equipes multidisciplinares.",
-    "value": 4,
-    "children": [
-      {
-        "id": "comp_3_1",
-        "label": "Compreender e explicar dimensões quantitativas de problemas",
-        "value": 3.5,
-        "children": [
-          {
-            "id": "cont_3_1_1",
-            "label": "Probabilidade e Estatística",
-            "value": 3,
-            "children": []
-          },
-          {
-            "id": "cont_3_1_2",
-            "label": "Métodos Quantitativos em Computação",
-            "value": 3,
+            "category": 4,
             "children": []
           }
         ]
       },
       {
-        "id": "comp_3_2",
-        "label": "Preparar e apresentar problemas técnicos e suas soluções",
-        "value": 3.5,
-        "children": [
-          {
-            "id": "cont_3_2_1",
-            "label": "Comunicação Profissional",
-            "value": 3,
-            "children": []
-          },
-          {
-            "id": "cont_3_2_2",
-            "label": "Inglês Técnico",
-            "value": 3,
-            "children": []
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "eixo_4",
-    "label": "Inovação e Empreendedorismo",
-    "description": "Desenvolver projetos de qualquer natureza em equipes multidisciplinares.",
-    "value": 4,
-    "children": [
-      {
-        "id": "comp_4_1",
-        "label": "Identificar oportunidades de negócio",
-        "value": 3.5,
-        "children": [
-          {
-            "id": "cont_4_1_1",
-            "label": "Empreendedorismo",
-            "value": 3,
-            "children": []
-          },
-          {
-            "id": "cont_4_1_2",
-            "label": "Inovação",
-            "value": 3,
-            "children": []
-          }
+        "id": "comp_1_6",
+        "label": "Conceber soluções computacionais a partir de decisões, visando o equilíbrio de todos os fatores envolvidos",
+        "classificação": "Criar",
+        "category": 5,
+        "linkWith": ["Projeto de Algoritmos", "Métodos Formais", "Inteligência Artificial e Computacional",
+        "Pesquisa Operacional e Otimização","Propriedade Intelectual", "Privacidade e Direitos Civis",
+      "Criptografia", "Ética em Computação", "Legislação de Informática", "Sustentabilidade",
+    "História da Computação", "Fundamentos de Economia"],
+        "children": [{
+          "id": "Projeto de Algoritmos",
+          "label": "Projeto de Algoritmos",
+          "category": 4
+        },
+        {
+          "id": "Métodos Formais",
+          "label": "Métodos Formais",
+          "category": 4
+        },
+        {
+          "id": "Inteligência Artificial e Computacional",
+          "label": "Inteligência Artificial e Computacional",
+          "category": 4
+        },
+        {
+          "id": "Pesquisa Operacional e Otimização",
+          "label": "Pesquisa Operacional e Otimização",
+          "category": 4
+        },
+        {
+          "id": "Propriedade Intelectual",
+          "label": "Propriedade Intelectual",
+          "category": 4
+        },
+        {
+          "id": "Privacidade e Direitos Civis",
+          "label": "Privacidade e Direitos Civis",
+          "category": 4
+        },
+        {
+          "id": "Criptografia",
+          "label": "Criptografia",
+          "category": 4
+        },
+        {
+          "id": "Ética em Computação",
+          "label": "Ética em Computação",
+          "category": 4
+        },
+        {
+          "id": "Legislação de Informática",
+          "label": "Legislação de Informática",
+          "category": 4
+        },
+        {
+          "id": "Sustentabilidade",
+          "label": "Sustentabilidade",
+          "category": 4
+        },
+        {
+          "id": "História da Computação",
+          "label": "História da Computação",
+          "category": 4
+        },
+        {
+          "id": "Fundamentos de Economia",
+          "label": "Fundamentos de Economia",
+          "category": 4
+        }
         ]
       },
       {
-        "id": "comp_4_2",
-        "label": "Desenvolver e implementar projetos de inovação",
-        "value": 3.5,
+        "id": "comp_1_7",
+        "label": "Aplicar temas e princípios recorrentes, como abstração, \ncomplexidade, princípio de localidade de referência (caching), \ncompartilhamento de recursos, segurança, concorrência, evolução de sistemas, \nentre outros, e reconhecer que esses temas e princípios são fundamentais à área de Ciência da Computação",
+        "classificação": "Aplicar",
+        "category": 5,
+        "linkWith" : ["Complexidade de Algoritmos", "Teoria da Computação", "Inteligência Artificial e Computacional",
+        "Sistemas Distribuídos", "Redes de Computadores", "Processamento Paralelo", "Segurança de Sistemas Computacionais",
+        "Arquitetura e Organização de Computadores", "Arquiteturas Paralelas de Computadores", "Banco de Dados", 
+        "Sistemas Operacionais", "Sistemas Concorrentes"
+      ],
         "children": [
           {
-            "id": "cont_4_2_1",
-            "label": "Gestão de Projetos",
-            "value": 3,
-            "children": []
+            "id": "Teoria da Computação",
+            "label": "Teoria da Computação",
+            "category": 4
           },
           {
-            "id": "cont_4_2_2",
-            "label": "Design Thinking",
-            "value": 3,
-            "children": []
+            "id": "Sistemas Distribuídos",
+            "label": "Sistemas Distribuídos",
+            "category": 4
+          },
+          {
+            "id": "Redes de Computadores",
+            "label": "Redes de Computadores",
+            "category": 4
+          },
+          {
+            "id": "Processamento Paralelo",
+            "label": "Processamento Paralelo",
+            "category": 4
+          },
+          {
+            "id": "Segurança de Sistemas Computacionais",
+            "label": "Segurança de Sistemas Computacionais",
+            "category": 4
+          },
+          {
+            "id": "Arquitetura e Organização de Computadores",
+            "label": "Arquitetura e Organização de Computadores",
+            "category": 4
+          },
+          {
+            "id": "Arquiteturas Paralelas de Computadores",
+            "label": "Arquiteturas Paralelas de Computadores",
+            "category": 4
+          },
+          {
+            "id": "Banco de Dados",
+            "label": "Banco de Dados",
+            "category": 4
+          },
+          {
+            "id": "Sistemas Operacionais",
+            "label": "Sistemas Operacionais",
+            "category": 4
+          },
+          {
+            "id": "Sistemas Concorrentes",
+            "label": "Sistemas Concorrentes",
+            "category": 4
           }
         ]
       }

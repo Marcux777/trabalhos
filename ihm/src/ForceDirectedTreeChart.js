@@ -1,10 +1,37 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useLayoutEffect, useState, useEffect } from 'react';
 import * as am5 from "@amcharts/amcharts5";
 import * as am5hierarchy from "@amcharts/amcharts5/hierarchy";
 import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
 import competencias from './competencias.json';
 
 const ForceDirectedTreeChart = () => {
+  const [categoriaFiltro, setCategoriaFiltro] = useState('');
+  const [relevanciaFiltro, setRelevanciaFiltro] = useState('');
+  const [classificacaoFiltro, setClassificacaoFiltro] = useState('');
+  const [dadosFiltrados, setDadosFiltrados] = useState(competencias);
+
+  useEffect(() => {
+    const aplicarFiltros = () => {
+      let filtrados = competencias;
+
+      if (categoriaFiltro) {
+        filtrados = filtrados.filter(item => item.category === categoriaFiltro);
+      }
+
+      if (relevanciaFiltro) {
+        filtrados = filtrados.filter(item => item.relevancia >= relevanciaFiltro);
+      }
+
+      if(classificacaoFiltro){
+        filtrados = filtrados.filter(item => item.classificação == classificacaoFiltro);
+      }
+
+      setDadosFiltrados(filtrados);
+    };
+
+    aplicarFiltros();
+  }, [categoriaFiltro, relevanciaFiltro, classificacaoFiltro]);
+
   useLayoutEffect(() => {
     let root = am5.Root.new("chartdiv");
     root.setThemes([am5themes_Animated.new(root)]);
@@ -16,17 +43,29 @@ const ForceDirectedTreeChart = () => {
     let series = root.container.children.push(
       am5hierarchy.ForceDirected.new(root, {
         idField: "id",
-        valueField: "value",
+        valueField: "category",
         categoryField: "label",
         childDataField: "children",
-        manyBodyStrength: -100,
+        manyBodyStrength: -150,
         centerStrength: 0.5,
-        minRadius: 10,
-        maxRadius: 25,
+        minRadius: 50,
+        maxRadius: 100,
         linkWithField: "linkWith",
         singleBranchOnly: false,
       })
     );
+
+    // Adicionar Zoom e Pan
+    series.set("panX", true);
+    series.set("panY", true);
+    series.set("wheelX", "zoomX");
+    series.set("wheelY", "zoomY");
+    series.set("doubleClickEnabled", true);
+
+    // Configurar animações suaves
+    series.set("setInteractive", true);
+    series.set("animationDuration", 500); // Duração da animação em ms
+    series.set("animationEasing", am5.ease.cubicInOut);
 
     // Estilizar nós
     series.nodes.template.setAll({
@@ -35,24 +74,22 @@ const ForceDirectedTreeChart = () => {
       visible: true,
       strokeWidth: 2,
       strokeOpacity: 1,
-      fill: am5.color("#7f7fff"), // Azul claro para preenchimento
-      stroke: am5.color("#ffffff"), // Contorno branco
+      fill: am5.color("#7f7fff"),
+      stroke: am5.color("#ffffff"),
       cursorOverStyle: "pointer",
       forceCreate: true,
       circle: am5.Circle.new(root, {
-        radius: 20, // Define o raio do círculo
-        stroke: am5.color("#ffffff"), // Contorno
-        strokeWidth: 2, // Largura do contorno
-        strokeOpacity: 1, // Opacidade máxima do contorno
-        fill: am5.color("#7f7fff"), // Azul claro no preenchimento
-        fillOpacity: 0.9 // Opacidade do preenchimento
+        radius: 20,
+        stroke: am5.color("#ffffff"),
+        strokeWidth: 2,
+        strokeOpacity: 1,
+        fill: am5.color("#7f7fff"),
+        fillOpacity: 0.9
       }),
       hitArea: am5.Circle.new(root, {
-        radius: 20 // Área de clique
+        radius: 20
       })
     });
-    
-    
 
     // Estilizar links
     series.links.template.setAll({
@@ -73,12 +110,11 @@ const ForceDirectedTreeChart = () => {
     });
 
     // Tooltips personalizadas
-    // Configurar tooltip personalizado
     series.nodes.template.events.on("pointerover", function(event) {
       let data = event.target.dataItem.dataContext;
       let tooltipText = data.description 
-        ? `[fontSize: 14px bold]${data.label}[/]\n[fontSize: 12px]${data.description}[/]`
-        : `[fontSize: 14px bold]${data.label}[/]`;
+        ? `[fontSize: 16px bold]${data.label}[/]\n[fontSize: 14px]${data.description}[/]`
+        : `[fontSize: 16px bold]${data.label}[/]`;
         
       let tooltip = am5.Tooltip.new(root, {
         getFillFromSprite: false,
@@ -96,9 +132,13 @@ const ForceDirectedTreeChart = () => {
       event.target.set("tooltip", tooltip);
     });
 
-    // Evento de clique
+    // Evento de clique com filtros aprimorados
     series.nodes.template.events.on("click", function(event) {
       let data = event.target.dataItem.dataContext;
+      if (data.url) {
+        window.open(data.url, '_blank');
+      }
+      
       let node = event.target;
       
       // Destacar nó selecionado
@@ -117,32 +157,29 @@ const ForceDirectedTreeChart = () => {
         strokeOpacity: 0.1
       });
 
-      let linkedNodes = [];
       series.links.each(function(link) {
         if (link.get("source") === node || link.get("target") === node) {
           link.setAll({
             strokeOpacity: 1
           });
-          linkedNodes.push(link.get("source"));
-          linkedNodes.push(link.get("target"));
         }
       });
     });
 
-    // Dados
-    series.data.setAll(competencias);
+    // Atualizar dados com filtros aplicados
+    series.data.setAll(dadosFiltrados);
 
     // Animação inicial
     series.appear(1000, 100);
 
     // Melhorar a qualidade do texto
     root.fontFamily = "Inter, system-ui, -apple-system, sans-serif";
-    root.fontSize = "12px";
+    root.fontSize = "14px"; // Aumentar o tamanho da fonte
 
     series.labels.template.setAll({
-      text: "{id}",
-      fontSize: "12px",
-      fontWeight: "500",
+      text: "{label}", // Alterado de "{id}" para "{label}"
+      fontSize: "14px", // Aumentar o tamanho da fonte
+      fontWeight: "600",
       fill: am5.color("#ffffff"),
       textAlign: "center",
       oversizedBehavior: "wrap",
@@ -155,28 +192,95 @@ const ForceDirectedTreeChart = () => {
     
     series.nodes.template.setAll({
       tooltipText: "{label}: {description}",
-      text: "{id}",
+      text: "{label}", // Alterado de "{id}" para "{label}"
       textRendering: "optimizeLegibility",
       fontSmoothing: "antialiased",
       cursorOverStyle: "pointer",
-      pixelPerfect: false
+      pixelPerfect: false,
+      fontSize: "14px", // Aumentar o tamanho da fonte
+      fill: am5.color("#ffffff")
     });
+
+    // Adicionar Legenda
+    let legend = root.container.children.push(am5.Legend.new(root, {
+      centerX: am5.percent(50),
+      x: am5.percent(50),
+      layout: root.verticalLayout,
+      align: "right",
+      paddingRight: 20,
+      paddingTop: 20,
+      paddingBottom: 20
+    }));
+
+    // Configurar items da legenda
+    legend.data.setAll(series.dataItems.map(dataItem => {
+      return {
+        name: dataItem.dataContext.name || dataItem.dataContext.label,
+        fill: dataItem.get("fill")
+      };
+    }));
 
     return () => {
       root.dispose();
     };
-  }, []);
+  }, [dadosFiltrados]);
 
   return (
-    <div 
-      id="chartdiv" 
-      style={{ 
-        width: "100%", 
-        height: "100vh",
-        background: "#1a1a1a"
-      }}
-    />
+    <div style={{ 
+      display: 'flex', 
+      flexDirection: 'column', 
+      justifyContent: 'center', 
+      alignItems: 'center', 
+      height: '100vh',
+      backgroundColor: '#1a1a1a' 
+    }}>
+      <div style={{ marginBottom: '20px', color: '#ffffff' }}>
+        <label>
+          Categoria:
+          <select value={categoriaFiltro} onChange={(e) => setCategoriaFiltro(e.target.value)}>
+            <option value="">Todas</option>
+            <option value="Categoria1">Categoria 1</option>
+            <option value="Categoria2">Categoria 2</option>
+            {/* ... */}
+          </select>
+        </label>
+
+        <label style={{ marginLeft: '20px' }}>
+          Relevância mínima:
+          <input
+            type="number"
+            value={relevanciaFiltro}
+            onChange={(e) => setRelevanciaFiltro(e.target.value)}
+            min="0"
+            max="100"
+            style={{ width: '60px', marginLeft: '5px' }}
+          />
+        </label>
+
+        <label style={{ marginLeft: '20px' }}> {/* Novo filtro */}
+          Classificação:
+          <select value={classificacaoFiltro} onChange={(e) => setClassificacaoFiltro(e.target.value)}>
+            <option value="">Todas</option>
+            <option value="Avaliar">Avaliar</option>
+            <option value="Aplicar">Aplicar</option>
+            <option value="Criar">Criar</option>
+            {/* Adicione outras classificações conforme necessário */}
+          </select>
+        </label>
+      </div>
+
+      <div 
+        id="chartdiv" 
+        style={{ 
+          width: "100%", 
+          height: "80vh",
+          background: "#1a1a1a",
+          overflow: "auto"      
+        }}
+      />
+    </div>
   );
 };
+
 
 export default ForceDirectedTreeChart;
