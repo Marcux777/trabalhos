@@ -1,0 +1,24 @@
+/* ZoomButtons.css */
+.zoom-buttons-container {
+  display: flex;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.zoom-button {
+  background-color: #333333;
+  color: #ffffff;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.zoom-button:hover {
+  background-color: #555555;
+}
+
+.zoom-button:focus {
+  outline: 2px solid #ffffff;
+}

@@ -1,44 +1,107 @@
-import React, { useLayoutEffect, useState, useEffect } from 'react';
+import React, { useLayoutEffect, useState, useEffect, useMemo, useRef } from 'react';
 import * as am5 from "@amcharts/amcharts5";
 import * as am5hierarchy from "@amcharts/amcharts5/hierarchy";
 import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
-import competencias from './competencias.json';
+import './ForceDirectedTreeChart.css'; // Import the CSS file
+
+// Importações dos ícones
+import { FaListAlt, FaStar, FaFilter, FaRedo, FaPlus, FaMinus, FaCrosshairs, FaInfoCircle } from 'react-icons/fa';
+
+// Importar o hook personalizado
+import useFiltragem from './useFiltragem';
+
+// Componente ZoomButtons já separado
+import ZoomButtons from './ZoomButtons';
 
 const ForceDirectedTreeChart = () => {
   const [categoriaFiltro, setCategoriaFiltro] = useState('');
-  const [relevanciaFiltro, setRelevanciaFiltro] = useState('');
+  const [relevanciaFiltro, setRelevanciaFiltro] = useState(50);
   const [classificacaoFiltro, setClassificacaoFiltro] = useState('');
-  const [dadosFiltrados, setDadosFiltrados] = useState(competencias);
+  const { dadosFiltrados, carregando } = useFiltragem(categoriaFiltro, relevanciaFiltro, classificacaoFiltro);
+  const [configuracoes, setConfiguracoes] = useState({
+    manyBodyStrength: -20,
+    centerStrength: 0.05,
+    minRadius: 25,
+    maxRadius: 50,
+    linkStrokeWidth: 1
+  });
+  const rootRef = useRef(null);
+
+  const categoriasDisponiveis = useMemo(() => {
+    const categorias = new Set();
+    const extrairCategorias = (itens) => {
+      itens.forEach(item => {
+        if (item.category !== undefined && item.category !== null) {
+          categorias.add(item.category);
+        }
+        if (item.children) {
+          extrairCategorias(item.children);
+        }
+      });
+    };
+    extrairCategorias(dadosFiltrados);
+    return Array.from(categorias).sort((a, b) => a - b); 
+  }, [dadosFiltrados]);
+
+  const contarNos = (dados) => {
+    let count = 0;
+    const contarRecursivo = (itens) => {
+      itens.forEach(item => {
+        count++;
+        if (item.children) {
+          contarRecursivo(item.children);
+        }
+      });
+    };
+    contarRecursivo(dados);
+    return count;
+  };
+
+  const totalNos = contarNos(dadosFiltrados);
 
   useEffect(() => {
-    const aplicarFiltros = () => {
-      let filtrados = competencias;
-
-      if (categoriaFiltro) {
-        filtrados = filtrados.filter(item => item.category === categoriaFiltro);
-      }
-
-      if (relevanciaFiltro) {
-        filtrados = filtrados.filter(item => item.relevancia >= relevanciaFiltro);
-      }
-
-      if(classificacaoFiltro){
-        filtrados = filtrados.filter(item => item.classificação == classificacaoFiltro);
-      }
-
-      setDadosFiltrados(filtrados);
-    };
-
-    aplicarFiltros();
-  }, [categoriaFiltro, relevanciaFiltro, classificacaoFiltro]);
+    // Ajustes baseados na quantidade de nós
+    if (totalNos > 100) {
+      setConfiguracoes({
+        manyBodyStrength: -30,
+        centerStrength: 0.07,
+        minRadius: 20,
+        maxRadius: 40,
+        linkStrokeWidth: 0.8
+      });
+    } else if (totalNos > 50) {
+      setConfiguracoes({
+        manyBodyStrength: -25,
+        centerStrength: 0.06,
+        minRadius: 22,
+        maxRadius: 45,
+        linkStrokeWidth: 0.9
+      });
+    } else {
+      setConfiguracoes({
+        manyBodyStrength: -20,
+        centerStrength: 0.05,
+        minRadius: 25,
+        maxRadius: 50,
+        linkStrokeWidth: 1
+      });
+    }
+  }, [totalNos]);
 
   useLayoutEffect(() => {
     let root = am5.Root.new("chartdiv");
+    rootRef.current = root;
     root.setThemes([am5themes_Animated.new(root)]);
+    root.container.set("mask", null);
 
-    // Configurar tema escuro
-    root.interfaceColors.set("background", am5.color("#1a1a1a"));
-    root.interfaceColors.set("text", am5.color("#ffffff"));
+    const backgroundColor = am5.color("#1a1a1a");
+    const nodeColor = am5.color("#999999");
+    const linkColor = am5.color("#444444");
+    const hoverColor = am5.color("#cccccc");
+    const textColor = am5.color("#ffffff");
+
+    root.interfaceColors.set("background", backgroundColor);
+    root.interfaceColors.set("text", textColor);
 
     let series = root.container.children.push(
       am5hierarchy.ForceDirected.new(root, {
@@ -46,241 +109,267 @@ const ForceDirectedTreeChart = () => {
         valueField: "category",
         categoryField: "label",
         childDataField: "children",
-        manyBodyStrength: -150,
-        centerStrength: 0.5,
-        minRadius: 50,
-        maxRadius: 100,
         linkWithField: "linkWith",
-        singleBranchOnly: false,
+        manyBodyStrength: configuracoes.manyBodyStrength,
+        centerStrength: configuracoes.centerStrength,
+        minRadius: configuracoes.minRadius,
+        maxRadius: configuracoes.maxRadius,
       })
     );
 
-    // Adicionar Zoom e Pan
     series.set("panX", true);
     series.set("panY", true);
     series.set("wheelX", "zoomX");
     series.set("wheelY", "zoomY");
     series.set("doubleClickEnabled", true);
 
-    // Configurar animações suaves
-    series.set("setInteractive", true);
-    series.set("animationDuration", 500); // Duração da animação em ms
+    series.set("interactive", true);
+    series.set("animationDuration", 500);
     series.set("animationEasing", am5.ease.cubicInOut);
 
-    // Estilizar nós
     series.nodes.template.setAll({
-      labelText: "{label}",
-      fillOpacity: 0.8,
-      visible: true,
-      strokeWidth: 2,
-      strokeOpacity: 1,
-      fill: am5.color("#7f7fff"),
-      stroke: am5.color("#ffffff"),
+      fillOpacity: 0.9,
+      strokeWidth: 0,
+      fill: nodeColor,
       cursorOverStyle: "pointer",
       forceCreate: true,
+      tooltipText: "{label}",
       circle: am5.Circle.new(root, {
-        radius: 20,
-        stroke: am5.color("#ffffff"),
-        strokeWidth: 2,
-        strokeOpacity: 1,
-        fill: am5.color("#7f7fff"),
-        fillOpacity: 0.9
+        radius: configuracoes.maxRadius - 20, // Ajuste dinâmico do raio
+        fill: nodeColor,
       }),
-      hitArea: am5.Circle.new(root, {
-        radius: 20
-      })
+      labelText: ""
     });
 
-    // Estilizar links
+    series.nodes.template.states.create("hover", {
+      scale: 1.2,
+      fill: hoverColor
+    });
+
     series.links.template.setAll({
-      strokeOpacity: 0.5,
-      stroke: am5.color("#7f7fff"),
-      strokeWidth: 2,
+      strokeOpacity: 0.6,
+      stroke: linkColor,
+      strokeWidth: configuracoes.linkStrokeWidth,
       tensionX: 0.5,
       tensionY: 0.5,
       geometryCached: true,
       forceCreate: true
     });
 
-    // Interatividade ao passar o mouse
-    series.nodes.template.states.create("hover", {
-      scale: 1.1,
-      fillOpacity: 1,
-      strokeWidth: 3
-    });
-
-    // Tooltips personalizadas
-    series.nodes.template.events.on("pointerover", function(event) {
+    series.nodes.template.events.on("pointerover", (event) => {
       let data = event.target.dataItem.dataContext;
       let tooltipText = data.description 
-        ? `[fontSize: 16px bold]${data.label}[/]\n[fontSize: 14px]${data.description}[/]`
-        : `[fontSize: 16px bold]${data.label}[/]`;
-        
+        ? `[fontSize:14px][bold]${data.label}[/]\n${data.description}[/]`
+        : `[fontSize:14px][bold]${data.label}[/]`;
+
       let tooltip = am5.Tooltip.new(root, {
         getFillFromSprite: false,
         labelText: tooltipText,
-        fill: am5.color("#262626"),
-        stroke: am5.color("#7f7fff"),
-        strokeWidth: 2,
-        paddingTop: 10,
-        paddingBottom: 10,
-        paddingLeft: 15,
-        paddingRight: 15,
-        cornerRadius: 5
+        fill: am5.color("#2b2b2b"),
+        stroke: am5.color("#888888"),
+        strokeWidth: 1,
+        paddingTop: 8,
+        paddingBottom: 8,
+        paddingLeft: 10,
+        paddingRight: 10,
+        cornerRadius: 4,
+        labelFill: textColor
       });
-      
       event.target.set("tooltip", tooltip);
     });
 
-    // Evento de clique com filtros aprimorados
-    series.nodes.template.events.on("click", function(event) {
-      let data = event.target.dataItem.dataContext;
-      if (data.url) {
-        window.open(data.url, '_blank');
-      }
-      
+    series.nodes.template.events.on("click", (event) => {
       let node = event.target;
-      
-      // Destacar nó selecionado
-      series.nodes.template.setAll({
-        fillOpacity: 0.3,
-        strokeOpacity: 0.2
-      });
-      
-      node.setAll({
-        fillOpacity: 1,
-        strokeOpacity: 1
+
+      series.nodes.each((otherNode) => {
+        otherNode.setAll({
+          fillOpacity: otherNode === node ? 1 : 0.3,
+        });
       });
 
-      // Destacar conexões
-      series.links.template.setAll({
-        strokeOpacity: 0.1
-      });
-
-      series.links.each(function(link) {
+      series.links.each((link) => {
+        link.setAll({
+          strokeOpacity: 0.1
+        });
         if (link.get("source") === node || link.get("target") === node) {
           link.setAll({
-            strokeOpacity: 1
+            strokeOpacity: 0.8
           });
         }
       });
     });
 
-    // Atualizar dados com filtros aplicados
     series.data.setAll(dadosFiltrados);
 
-    // Animação inicial
     series.appear(1000, 100);
 
-    // Melhorar a qualidade do texto
     root.fontFamily = "Inter, system-ui, -apple-system, sans-serif";
-    root.fontSize = "14px"; // Aumentar o tamanho da fonte
-
-    series.labels.template.setAll({
-      text: "{label}", // Alterado de "{id}" para "{label}"
-      fontSize: "14px", // Aumentar o tamanho da fonte
-      fontWeight: "600",
-      fill: am5.color("#ffffff"),
-      textAlign: "center",
-      oversizedBehavior: "wrap",
-      maxWidth: 150,
-      layer: 1,
-      forceHidden: false,
-      templateField: "labelSettings",
-      renderingMode: "continuous",
-    });
-    
-    series.nodes.template.setAll({
-      tooltipText: "{label}: {description}",
-      text: "{label}", // Alterado de "{id}" para "{label}"
-      textRendering: "optimizeLegibility",
-      fontSmoothing: "antialiased",
-      cursorOverStyle: "pointer",
-      pixelPerfect: false,
-      fontSize: "14px", // Aumentar o tamanho da fonte
-      fill: am5.color("#ffffff")
-    });
-
-    // Adicionar Legenda
-    let legend = root.container.children.push(am5.Legend.new(root, {
-      centerX: am5.percent(50),
-      x: am5.percent(50),
-      layout: root.verticalLayout,
-      align: "right",
-      paddingRight: 20,
-      paddingTop: 20,
-      paddingBottom: 20
-    }));
-
-    // Configurar items da legenda
-    legend.data.setAll(series.dataItems.map(dataItem => {
-      return {
-        name: dataItem.dataContext.name || dataItem.dataContext.label,
-        fill: dataItem.get("fill")
-      };
-    }));
+    root.fontSize = "14px";
 
     return () => {
       root.dispose();
     };
-  }, [dadosFiltrados]);
+  }, [dadosFiltrados, configuracoes]);
+
+  // Funções de Zoom Atualizadas
+  const zoomIn = () => {
+    if (rootRef.current) {
+      const root = rootRef.current;
+      const container = root.container;
+      const currentScale = container.get("scale") || 1;
+      const newScale = Math.min(currentScale * 1.2, 5); // Limite máximo de 5x
+      container.animate({
+        key: "scale",
+        to: newScale,
+        duration: 500,
+        easing: am5.ease.out(am5.ease.cubic)
+      });
+    }
+  };
+
+  const zoomOut = () => {
+    if (rootRef.current) {
+      const root = rootRef.current;
+      const container = root.container;
+      const currentScale = container.get("scale") || 1;
+      const newScale = Math.max(currentScale / 1.2, 0.5); // Limite mínimo de 0.5x
+      container.animate({
+        key: "scale",
+        to: newScale,
+        duration: 500,
+        easing: am5.ease.out(am5.ease.cubic)
+      });
+    }
+  };
+
+    // Atualizar a função resetarZoom para centralizar o grafo corretamente
+  const resetarZoom = () => {
+    if (rootRef.current) {
+      const root = rootRef.current;
+      const container = root.container;
+  
+      // Resetar escala
+      container.animate({
+        key: "scale",
+        to: 1,
+        duration: 500,
+        easing: am5.ease.out(am5.ease.cubic)
+      });
+  
+      // Resetar posição
+      container.animate({
+        key: "x",
+        to: 0,
+        duration: 500,
+        easing: am5.ease.out(am5.ease.cubic)
+      });
+      container.animate({
+        key: "y",
+        to: 0,
+        duration: 500,
+        easing: am5.ease.out(am5.ease.cubic)
+      });
+    }
+  };
+
+  const limparFiltros = () => {
+    setCategoriaFiltro('');
+    setRelevanciaFiltro(50);
+    setClassificacaoFiltro('');
+  };
 
   return (
-    <div style={{ 
-      display: 'flex', 
-      flexDirection: 'column', 
-      justifyContent: 'center', 
-      alignItems: 'center', 
-      height: '100vh',
-      backgroundColor: '#1a1a1a' 
-    }}>
-      <div style={{ marginBottom: '20px', color: '#ffffff' }}>
-        <label>
-          Categoria:
-          <select value={categoriaFiltro} onChange={(e) => setCategoriaFiltro(e.target.value)}>
-            <option value="">Todas</option>
-            <option value="Categoria1">Categoria 1</option>
-            <option value="Categoria2">Categoria 2</option>
-            {/* ... */}
-          </select>
-        </label>
+    <div className="chart-container">
+      <h1 className="title">Grafo de Competências</h1>
+      <p className="description">
+        Use os filtros para refinar as competências exibidas. Clique em um nó para destacar conexões relacionadas.
+      </p>
+      <fieldset className="filters-fieldset">
+        <legend className="filters-legend">Filtros</legend>
+        <div className="filters-container">
+          <div className="filter">
+            <label htmlFor="categoria" className="filter-label">
+              <FaListAlt className="filter-icon" />
+              Categoria:
+            </label>
+            <select 
+              id="categoria"
+              value={categoriaFiltro} 
+              onChange={(e) => setCategoriaFiltro(e.target.value)}
+              className="filter-select"
+              aria-label="Selecionar categoria para filtrar competências"
+            >
+              <option value="">Todas</option>
+              {categoriasDisponiveis.map(cat => (
+                <option key={cat} value={cat}>{`Categoria ${cat}`}</option>
+              ))}
+            </select>
+          </div>
+          
+          <div className="filter">
+            <label htmlFor="classificacao" className="filter-label">
+              <FaFilter className="filter-icon" />
+              Classificação:
+              <FaInfoCircle 
+                className="info-icon" 
+                aria-label="Avaliar: Descrição Avaliar; Aplicar: Descrição Aplicar; Criar: Descrição Criar"
+                title="Avaliar: Descrição Avaliar; Aplicar: Descrição Aplicar; Criar: Descrição Criar"
+                style={{ marginLeft: '5px', cursor: 'pointer' }}
+              />
+            </label>
+            <select 
+              id="classificacao"
+              value={classificacaoFiltro} 
+              onChange={(e) => setClassificacaoFiltro(e.target.value)}
+              className="filter-select"
+              aria-label="Selecionar classificação para filtrar competências"
+            >
+              <option value="">Todas</option>
+              <option value="Avaliar">Avaliar</option>
+              <option value="Aplicar">Aplicar</option>
+              <option value="Criar">Criar</option>
+            </select>
+          </div>
+        </div>
 
-        <label style={{ marginLeft: '20px' }}>
-          Relevância mínima:
-          <input
-            type="number"
-            value={relevanciaFiltro}
-            onChange={(e) => setRelevanciaFiltro(e.target.value)}
-            min="0"
-            max="100"
-            style={{ width: '60px', marginLeft: '5px' }}
-          />
-        </label>
+        <button 
+          onClick={limparFiltros}
+          className="limpar-filtros-button"
+          aria-label="Limpar todos os filtros aplicados"
+        >
+          <FaRedo className="button-icon"/>
+          Limpar filtros
+        </button>
 
-        <label style={{ marginLeft: '20px' }}> {/* Novo filtro */}
-          Classificação:
-          <select value={classificacaoFiltro} onChange={(e) => setClassificacaoFiltro(e.target.value)}>
-            <option value="">Todas</option>
-            <option value="Avaliar">Avaliar</option>
-            <option value="Aplicar">Aplicar</option>
-            <option value="Criar">Criar</option>
-            {/* Adicione outras classificações conforme necessário */}
-          </select>
-        </label>
-      </div>
+        {carregando && (
+          <div className="carregando">
+            <span className="loader"></span> Aplicando filtros...
+          </div>
+        )}
+
+        {totalNos > 0 ? (
+          <div className="resultado">
+            Exibindo <strong>{totalNos}</strong> nó(s) após aplicar os filtros.
+          </div>
+        ) : (
+          <div className="resultado">
+            Nenhum resultado encontrado com os filtros atuais.
+          </div>
+        )}
+      </fieldset>
+
+      <p className="instrucoes">
+        Use a roda do mouse para dar zoom e clique e arraste para mover o grafo.
+      </p>
+
+      <ZoomButtons zoomIn={zoomIn} zoomOut={zoomOut} resetarZoom={resetarZoom} />
 
       <div 
         id="chartdiv" 
-        style={{ 
-          width: "100%", 
-          height: "80vh",
-          background: "#1a1a1a",
-          overflow: "auto"      
-        }}
+        className="chart-div"
       />
     </div>
   );
 };
-
 
 export default ForceDirectedTreeChart;
